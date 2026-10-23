@@ -117,14 +117,60 @@ function isUserProfile(value: unknown): value is UserProfile {
     && FITNESS_GOALS.includes(profile.goal as FitnessGoal);
 }
 
-const programs = [
-  { name: 'PUSH', detail: 'Göğüs · Omuz · Triceps', days: 'İtiş antrenmanı' },
-  { name: 'PULL', detail: 'Sırt · Biceps', days: 'Çekiş antrenmanı' },
-  { name: 'LEGS', detail: 'Quadriceps · Hamstring · Kalça', days: 'Bacak antrenmanı' },
-  { name: 'UPPER / LOWER', detail: 'Üst ve alt vücut', days: 'Dengeli gelişim' },
-  { name: 'FULL BODY', detail: 'Tüm vücut', days: 'Yeni başlayanlar için' },
-  { name: 'BRO SPLIT', detail: 'Her gün farklı kas grubu', days: 'Klasik bölgesel program' },
+type Exercise = {
+  name: string;
+  muscle: string;
+  sets: string;
+  reps: string;
+  rest?: string;
+  tip: string;
+};
+
+const exerciseLibrary: Exercise[] = [
+  { name: 'Bench Press', muscle: 'Göğüs · Ön omuz · Triceps', sets: '3–4', reps: '6–12', rest: '120 sn', tip: 'Kürek kemiklerini sabitle, ayaklarını yere bas. Barı kontrollü indir ve kaldır.' },
+  { name: 'Incline Dumbbell Press', muscle: 'Üst göğüs', sets: '3', reps: '8–12', rest: '90 sn', tip: 'Sehpayı hafif eğimli ayarla, dirseklerini kontrollü indir.' },
+  { name: 'Shoulder Press', muscle: 'Omuz · Triceps', sets: '3', reps: '8–12', rest: '90 sn', tip: 'Karnını sık, belini aşırı çukurlaştırmadan ağırlığı kaldır.' },
+  { name: 'Lateral Raise', muscle: 'Yan omuz', sets: '3', reps: '12–15', rest: '60 sn', tip: 'Dirseklerini hafif bük, ağırlığı savurmadan kaldır.' },
+  { name: 'Triceps Rope Pushdown', muscle: 'Triceps', sets: '3', reps: '10–15', rest: '60 sn', tip: 'Dirseklerini gövdene yakın tut ve hareketi kontrollü yap.' },
+  { name: 'Lat Pulldown', muscle: 'Kanat · Biceps', sets: '3–4', reps: '8–12', rest: '90 sn', tip: 'Göğsünü dik tut; barı üst göğse çek, sallanma.' },
+  { name: 'Seated Cable Row', muscle: 'Sırt', sets: '3', reps: '8–12', rest: '90 sn', tip: 'Gövdeni sabit tut ve kürek kemiklerini kontrollü yaklaştır.' },
+  { name: 'Deadlift', muscle: 'Arka bacak · Kalça · Sırt', sets: '3', reps: '5–8', rest: '150 sn', tip: 'Barı vücuduna yakın tut, karnını sık ve sırt pozisyonunu koru.' },
+  { name: 'Biceps Curl', muscle: 'Biceps', sets: '3', reps: '10–15', rest: '60 sn', tip: 'Dirseklerini gövdene yakın tut, vücudunu sallama.' },
+  { name: 'Squat', muscle: 'Quadriceps · Kalça', sets: '3–4', reps: '6–10', rest: '150 sn', tip: 'Dizlerini ayak yönünde takip ettir ve kontrollü çömel.' },
+  { name: 'Leg Press', muscle: 'Quadriceps · Kalça', sets: '3', reps: '10–12', rest: '120 sn', tip: 'Belini pedden kaldırma; dizlerini kilitlemeden itişi bitir.' },
+  { name: 'Romanian Deadlift', muscle: 'Hamstring · Kalça', sets: '3', reps: '8–12', rest: '120 sn', tip: 'Kalçanı geriye gönder, sırtını nötr tut ve ağırlığı bacaklarına yakın indir.' },
+  { name: 'Leg Curl', muscle: 'Hamstring', sets: '3', reps: '10–15', rest: '60 sn', tip: 'Ağırlığı sarsmadan kaldırıp yavaşça indir.' },
+  { name: 'Calf Raise', muscle: 'Baldır', sets: '3', reps: '12–20', rest: '45 sn', tip: 'Alt noktada esne, üst noktada kısa süre sık.' },
+  { name: 'Plank', muscle: 'Karın · Core', sets: '3', reps: '30–60 sn', rest: '45 sn', tip: 'Kalçanı düşürmeden ve belini çukurlaştırmadan pozisyonu koru.' },
 ];
+
+type TrainingProgram = {
+  name: string;
+  detail: string;
+  days: string;
+  exercises: Exercise[];
+};
+
+const programs: TrainingProgram[] = [
+  { name: 'PUSH', detail: 'Göğüs · Omuz · Triceps', days: 'İtiş antrenmanı', exercises: [exerciseLibrary[0], exerciseLibrary[1], exerciseLibrary[2], exerciseLibrary[3], exerciseLibrary[4]] },
+  { name: 'PULL', detail: 'Sırt · Biceps', days: 'Çekiş antrenmanı', exercises: [exerciseLibrary[5], exerciseLibrary[6], exerciseLibrary[7], exerciseLibrary[8]] },
+  { name: 'LEGS', detail: 'Quadriceps · Hamstring · Kalça', days: 'Bacak antrenmanı', exercises: [exerciseLibrary[9], exerciseLibrary[10], exerciseLibrary[11], exerciseLibrary[12], exerciseLibrary[13]] },
+  { name: 'UPPER / LOWER', detail: 'Üst ve alt vücut', days: '4 gün: 2 üst + 2 alt', exercises: [exerciseLibrary[0], exerciseLibrary[5], exerciseLibrary[2], exerciseLibrary[8], exerciseLibrary[9], exerciseLibrary[11], exerciseLibrary[12]] },
+  { name: 'FULL BODY', detail: 'Tüm vücut', days: 'Haftada 2–3 gün', exercises: [exerciseLibrary[0], exerciseLibrary[5], exerciseLibrary[9], exerciseLibrary[11], exerciseLibrary[14]] },
+  { name: 'BRO SPLIT', detail: 'Her gün farklı kas grubu', days: 'Klasik bölgesel program', exercises: [exerciseLibrary[0], exerciseLibrary[2], exerciseLibrary[5], exerciseLibrary[8], exerciseLibrary[9]] },
+];
+
+const CUSTOM_PROGRAMS_STORAGE_KEY = '@mdfit/custom-programs';
+const NUTRITION_STORAGE_KEY = '@mdfit/nutrition-entries';
+type NutritionEntry = {
+  id: string;
+  date: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fat: number;
+};
+type CustomProgram = { id: string; name: string; exercises: Exercise[] };
 
 export default function App() {
   const [tab, setTab] = useState('Ana Sayfa');
@@ -147,8 +193,132 @@ export default function App() {
   const [profileError, setProfileError] = useState('');
   const [profileSuccess, setProfileSuccess] = useState('');
   const [profileLoadAttempt, setProfileLoadAttempt] = useState(0);
+  const [nutritionEntries, setNutritionEntries] = useState<NutritionEntry[]>([]);
+  const [nutritionDate, setNutritionDate] = useState(getToday);
+  const [nutritionCalories, setNutritionCalories] = useState('');
+  const [nutritionProtein, setNutritionProtein] = useState('');
+  const [nutritionCarbs, setNutritionCarbs] = useState('');
+  const [nutritionFat, setNutritionFat] = useState('');
+  const [nutritionMessage, setNutritionMessage] = useState('');
+  const [selectedProgram, setSelectedProgram] = useState<string | null>(null);
+  const [customPrograms, setCustomPrograms] = useState<CustomProgram[]>([]);
+  const [customProgramName, setCustomProgramName] = useState('');
+  const [customExerciseName, setCustomExerciseName] = useState('Bench Press');
+  const [customExerciseSets, setCustomExerciseSets] = useState('3');
+  const [customExerciseReps, setCustomExerciseReps] = useState('8–12');
+  const [customExerciseRest, setCustomExerciseRest] = useState('90 sn');
+  const [draftExercises, setDraftExercises] = useState<Exercise[]>([]);
+  const [programError, setProgramError] = useState('');
+  const [programSuccess, setProgramSuccess] = useState('');
 
-  const tabs = ['Ana Sayfa', 'Programlar', 'Hareketler', 'Gelişim', 'Profil'];
+  useEffect(() => {
+    let active = true;
+    AsyncStorage.getItem(CUSTOM_PROGRAMS_STORAGE_KEY)
+      .then((stored) => {
+        if (!active || stored === null) return;
+        const parsed: unknown = JSON.parse(stored);
+        if (Array.isArray(parsed)) setCustomPrograms(parsed as CustomProgram[]);
+      })
+      .catch(() => {
+        if (active) setProgramError('Kişisel programlar yüklenemedi.');
+      });
+    return () => { active = false; };
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+    AsyncStorage.getItem(NUTRITION_STORAGE_KEY)
+      .then((stored) => {
+        if (!active || !stored) return;
+        const parsed: unknown = JSON.parse(stored);
+        if (Array.isArray(parsed)) setNutritionEntries(parsed as NutritionEntry[]);
+      })
+      .catch(() => {
+        if (active) setNutritionMessage('Beslenme kayıtları yüklenemedi.');
+      });
+    return () => { active = false; };
+  }, []);
+
+  const saveNutritionEntry = async () => {
+    setNutritionMessage('');
+    const calories = parseProfileNumber(nutritionCalories);
+    const protein = parseProfileNumber(nutritionProtein);
+    const carbs = parseProfileNumber(nutritionCarbs);
+    const fat = parseProfileNumber(nutritionFat);
+    if (!isValidDate(nutritionDate) || calories === null || protein === null || carbs === null || fat === null
+      || calories < 0 || protein < 0 || carbs < 0 || fat < 0) {
+      setNutritionMessage('Tarih ve tüm besin alanlarına sıfır veya daha büyük geçerli değerler gir.');
+      return;
+    }
+    const entry: NutritionEntry = { id: String(Date.now()), date: nutritionDate, calories, protein, carbs, fat };
+    const updated = [entry, ...nutritionEntries].slice(0, 180);
+    try {
+      await AsyncStorage.setItem(NUTRITION_STORAGE_KEY, JSON.stringify(updated));
+      setNutritionEntries(updated);
+      setNutritionCalories('');
+      setNutritionProtein('');
+      setNutritionCarbs('');
+      setNutritionFat('');
+      setNutritionDate(getToday());
+      setNutritionMessage('Beslenme kaydın bu cihaza kaydedildi.');
+    } catch {
+      setNutritionMessage('Kayıt kaydedilemedi. Tekrar dene.');
+    }
+  };
+
+  const addDraftExercise = () => {
+    const exercise = exerciseLibrary.find((item) => item.name === customExerciseName);
+    if (!exercise) return;
+    const sets = customExerciseSets.trim();
+    const reps = customExerciseReps.trim();
+    const rest = customExerciseRest.trim();
+    if (!sets || !reps || !rest) {
+      setProgramError('Set ve tekrar alanlarını doldur.');
+      return;
+    }
+    setProgramError('');
+    setProgramSuccess('');
+    setDraftExercises((current) => [...current, { ...exercise, sets, reps, rest }]);
+  };
+
+  const saveCustomProgram = async () => {
+    setProgramError('');
+    setProgramSuccess('');
+    const name = customProgramName.trim();
+    if (name.length < 2) {
+      setProgramError('Program adına en az 2 karakter yaz.');
+      return;
+    }
+    if (draftExercises.length === 0) {
+      setProgramError('Kaydetmeden önce en az bir hareket ekle.');
+      return;
+    }
+    const saved: CustomProgram = { id: String(Date.now()), name, exercises: draftExercises };
+    const updated = [...customPrograms, saved];
+    try {
+      await AsyncStorage.setItem(CUSTOM_PROGRAMS_STORAGE_KEY, JSON.stringify(updated));
+      setCustomPrograms(updated);
+      setCustomProgramName('');
+      setDraftExercises([]);
+      setProgramSuccess('Kişisel programın bu cihaza kaydedildi.');
+    } catch {
+      setProgramError('Program kaydedilemedi. Tekrar dene.');
+    }
+  };
+
+  const deleteCustomProgram = async (programId: string) => {
+    const updated = customPrograms.filter((program) => program.id !== programId);
+    try {
+      await AsyncStorage.setItem(CUSTOM_PROGRAMS_STORAGE_KEY, JSON.stringify(updated));
+      setCustomPrograms(updated);
+      setProgramSuccess('Kişisel program silindi.');
+      setProgramError('');
+    } catch {
+      setProgramError('Program silinemedi. Tekrar dene.');
+    }
+  };
+
+  const tabs = ['Ana Sayfa', 'Programlar', 'Beslenme', 'Hareketler', 'Gelişim', 'Profil'];
 
   useEffect(() => {
     let isActive = true;
@@ -356,7 +526,7 @@ export default function App() {
                 <Text style={styles.muted}>Tamamlanan</Text>
               </View>
               <View style={styles.stat}>
-                <Text style={styles.number}>5</Text>
+                <Text style={styles.number}>6</Text>
                 <Text style={styles.muted}>Ana bölüm</Text>
               </View>
               <View style={styles.stat}>
@@ -367,7 +537,7 @@ export default function App() {
           </>
         )}
 
-        <Text style={styles.section}>{tab === 'Programlar' ? 'ANTRENMAN PROGRAMLARI' : tab.toUpperCase()}</Text>
+        <Text style={styles.section}>{tab === 'Programlar' ? 'ANTRENMAN PROGRAMLARI' : tab === 'Beslenme' ? 'BESLENME VE KALORİ TAKİBİ' : tab.toUpperCase()}</Text>
 
         {tab === 'Ana Sayfa' && (
           <View style={styles.card}>
@@ -379,39 +549,150 @@ export default function App() {
           </View>
         )}
 
-        {tab === 'Programlar' && programs.map((p) => (
-          <TouchableOpacity
-            key={p.name}
-            style={styles.card}
-            onPress={() => setDone((old) => old.includes(p.name) ? old : [...old, p.name])}
-          >
-            <View style={styles.programRow}>
-              <View style={styles.programIcon}><Text style={styles.green}>{p.name === 'UPPER / LOWER' ? 'UL' : p.name.slice(0, 1)}</Text></View>
-              <View style={{ flex: 1 }}>
-                <Text style={styles.cardTitle}>{p.name}</Text>
-                <Text style={styles.muted}>{p.detail}</Text>
-                <Text style={styles.small}>{p.days}</Text>
-              </View>
-              <Text style={styles.green}>{done.includes(p.name) ? '✓' : '＋'}</Text>
+        {tab === 'Programlar' && (
+          <>
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Hazır programlar</Text>
+              <Text style={styles.muted}>Bir programa dokunarak hareketleri, setleri ve tekrarları görüntüle.</Text>
             </View>
-          </TouchableOpacity>
-        ))}
+            {programs.map((p) => (
+              <View key={p.name} style={styles.card}>
+                <TouchableOpacity
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: selectedProgram === p.name }}
+                  onPress={() => setSelectedProgram((current) => current === p.name ? null : p.name)}
+                >
+                  <View style={styles.programRow}>
+                    <View style={styles.programIcon}><Text style={styles.green}>{p.name === 'UPPER / LOWER' ? 'UL' : p.name.slice(0, 1)}</Text></View>
+                    <View style={{ flex: 1 }}>
+                      <Text style={styles.cardTitle}>{p.name}</Text>
+                      <Text style={styles.muted}>{p.detail}</Text>
+                      <Text style={styles.small}>{p.days} · {p.exercises.length} hareket</Text>
+                    </View>
+                    <Text style={styles.green}>{selectedProgram === p.name ? '−' : '＋'}</Text>
+                  </View>
+                </TouchableOpacity>
+                {selectedProgram === p.name && (
+                  <View style={styles.exerciseList}>
+                    {p.exercises.map((ex, index) => (
+                      <View key={`${p.name}-${ex.name}-${index}`} style={styles.exerciseItem}>
+                        <Text style={styles.cardTitle}>{index + 1}. {ex.name}</Text>
+                        <Text style={styles.muted}>{ex.muscle}</Text>
+                        <Text style={styles.green}>{ex.sets} set × {ex.reps} tekrar</Text>
+                        {!!ex.rest && <Text style={styles.small}>Dinlenme: {ex.rest}</Text>}
+                        <Text style={styles.small}>{ex.tip}</Text>
+                      </View>
+                    ))}
+                    <TouchableOpacity style={styles.button} onPress={() => setDone((old) => old.includes(p.name) ? old : [...old, p.name])}>
+                      <Text style={styles.buttonText}>{done.includes(p.name) ? 'PROGRAM TAMAMLANDI ✓' : 'PROGRAMI TAMAMLANDI OLARAK İŞARETLE'}</Text>
+                    </TouchableOpacity>
+                  </View>
+                )}
+              </View>
+            ))}
+
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Kendi programını oluştur</Text>
+              <Text style={styles.muted}>Bir isim ver, hareket seç ve set/tekrar bilgilerini belirle.</Text>
+              <Text style={styles.inputLabel}>Program adı</Text>
+              <TextInput accessibilityLabel="Kişisel program adı" style={styles.input} value={customProgramName} onChangeText={setCustomProgramName} placeholder="Örn. Hipertrofi programım" placeholderTextColor="#738071" maxLength={50} />
+              <Text style={styles.inputLabel}>Hareket seç</Text>
+              <View style={styles.exercisePicker}>
+                {exerciseLibrary.map((exercise) => (
+                  <TouchableOpacity key={exercise.name} style={[styles.goalOption, customExerciseName === exercise.name && styles.goalOptionActive]} onPress={() => setCustomExerciseName(exercise.name)}>
+                    <Text style={[styles.goalText, customExerciseName === exercise.name && styles.goalTextActive]}>{exercise.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <Text style={styles.inputLabel}>Set sayısı</Text>
+              <TextInput accessibilityLabel="Set sayısı" style={styles.input} value={customExerciseSets} onChangeText={setCustomExerciseSets} placeholder="3" placeholderTextColor="#738071" keyboardType="number-pad" maxLength={2} />
+              <Text style={styles.inputLabel}>Tekrar aralığı</Text>
+              <TextInput accessibilityLabel="Tekrar aralığı" style={styles.input} value={customExerciseReps} onChangeText={setCustomExerciseReps} placeholder="8–12" placeholderTextColor="#738071" maxLength={20} />
+              <Text style={styles.inputLabel}>Set arası dinlenme</Text>
+              <TextInput accessibilityLabel="Set arası dinlenme süresi" style={styles.input} value={customExerciseRest} onChangeText={setCustomExerciseRest} placeholder="90 sn" placeholderTextColor="#738071" maxLength={20} />
+              <TouchableOpacity style={styles.button} onPress={addDraftExercise}><Text style={styles.buttonText}>HAREKETİ PROGRAMA EKLE</Text></TouchableOpacity>
+              {draftExercises.map((exercise, index) => (
+                <View key={`${exercise.name}-${index}`} style={styles.exerciseItem}>
+                  <Text style={styles.cardTitle}>{exercise.name}</Text>
+                  <Text style={styles.green}>{exercise.sets} set × {exercise.reps} tekrar</Text>
+                  {!!exercise.rest && <Text style={styles.small}>Dinlenme: {exercise.rest}</Text>}
+                  <TouchableOpacity onPress={() => setDraftExercises((current) => current.filter((_, i) => i !== index))}><Text style={styles.link}>Bu hareketi kaldır</Text></TouchableOpacity>
+                </View>
+              ))}
+              {!!programError && <Text accessibilityRole="alert" style={styles.error}>{programError}</Text>}
+              {!!programSuccess && <Text style={styles.success}>{programSuccess}</Text>}
+              <TouchableOpacity style={styles.button} onPress={saveCustomProgram}><Text style={styles.buttonText}>KİŞİSEL PROGRAMI KAYDET</Text></TouchableOpacity>
+            </View>
+
+            {customPrograms.length > 0 && (
+              <>
+                <Text style={styles.section}>KAYDEDİLEN KİŞİSEL PROGRAMLAR</Text>
+                {customPrograms.map((program) => (
+                  <View key={program.id} style={styles.card}>
+                    <Text style={styles.cardTitle}>{program.name}</Text>
+                    <Text style={styles.muted}>{program.exercises.length} hareket</Text>
+                    {program.exercises.map((exercise, index) => (
+                      <View key={`${program.id}-${exercise.name}-${index}`} style={styles.exerciseItem}>
+                        <Text style={styles.cardTitle}>{exercise.name}</Text>
+                        <Text style={styles.green}>{exercise.sets} set × {exercise.reps} tekrar</Text>
+                        {!!exercise.rest && <Text style={styles.small}>Dinlenme: {exercise.rest}</Text>}
+                      </View>
+                    ))}
+                    <TouchableOpacity onPress={() => deleteCustomProgram(program.id)}><Text style={styles.link}>Bu programı sil</Text></TouchableOpacity>
+                  </View>
+                ))}
+              </>
+            )}
+          </>
+        )}
+
+        {tab === 'Beslenme' && (
+          <>
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Günlük beslenme kaydı</Text>
+              <Text style={styles.muted}>Yediklerinden aldığın kalori ve makroları günlük kaydet.</Text>
+              <Text style={styles.inputLabel}>Tarih (YYYY-AA-GG)</Text>
+              <TextInput accessibilityLabel="Beslenme tarihi" style={styles.input} value={nutritionDate} onChangeText={setNutritionDate} placeholder="2026-10-24" placeholderTextColor="#738071" maxLength={10} />
+              <Text style={styles.inputLabel}>Kalori (kcal)</Text>
+              <TextInput accessibilityLabel="Kalori" style={styles.input} value={nutritionCalories} onChangeText={setNutritionCalories} placeholder="Örn. 2200" placeholderTextColor="#738071" keyboardType="decimal-pad" />
+              <Text style={styles.inputLabel}>Protein (g)</Text>
+              <TextInput accessibilityLabel="Protein gram" style={styles.input} value={nutritionProtein} onChangeText={setNutritionProtein} placeholder="Örn. 170" placeholderTextColor="#738071" keyboardType="decimal-pad" />
+              <Text style={styles.inputLabel}>Karbonhidrat (g)</Text>
+              <TextInput accessibilityLabel="Karbonhidrat gram" style={styles.input} value={nutritionCarbs} onChangeText={setNutritionCarbs} placeholder="Örn. 240" placeholderTextColor="#738071" keyboardType="decimal-pad" />
+              <Text style={styles.inputLabel}>Yağ (g)</Text>
+              <TextInput accessibilityLabel="Yağ gram" style={styles.input} value={nutritionFat} onChangeText={setNutritionFat} placeholder="Örn. 65" placeholderTextColor="#738071" keyboardType="decimal-pad" />
+              {!!nutritionMessage && <Text style={nutritionMessage.includes('kaydedildi') ? styles.success : styles.error}>{nutritionMessage}</Text>}
+              <TouchableOpacity style={styles.button} onPress={saveNutritionEntry}>
+                <Text style={styles.buttonText}>BESLENME KAYDINI KAYDET</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Son kayıtlar</Text>
+              {nutritionEntries.length === 0 ? (
+                <Text style={styles.muted}>Henüz beslenme kaydı yok. İlk kaydını ekleyebilirsin.</Text>
+              ) : nutritionEntries.slice(0, 14).map((entry) => (
+                <View key={entry.id} style={styles.exerciseItem}>
+                  <Text style={styles.cardTitle}>{entry.date.split('-').reverse().join('.')} · {entry.calories} kcal</Text>
+                  <Text style={styles.muted}>Protein {entry.protein} g · Karbonhidrat {entry.carbs} g · Yağ {entry.fat} g</Text>
+                  <View style={styles.entryMetrics}>
+                    <View style={[styles.macroBar, { flex: Math.max(1, entry.protein), backgroundColor: '#9cff35' }]} />
+                    <View style={[styles.macroBar, { flex: Math.max(1, entry.carbs), backgroundColor: '#75b9ff' }]} />
+                    <View style={[styles.macroBar, { flex: Math.max(1, entry.fat), backgroundColor: '#ffb86b' }]} />
+                  </View>
+                </View>
+              ))}
+            </View>
+          </>
+        )}
 
         {tab === 'Hareketler' && (
   <View style={styles.card}>
     <Text style={styles.cardTitle}>Hareket kütüphanesi</Text>
-    {[
-      {name:'Bench Press', muscle:'Göğüs · Ön omuz · Triceps', sets:'3–4 set × 6–12 tekrar', tip:'Kürek kemiklerini sabitle, ayaklarını yere bas. Barı kontrollü indir ve kaldır.'},
-      {name:'Squat', muscle:'Quadriceps · Kalça', sets:'3–4 set × 6–12 tekrar', tip:'Sırtını dengeli tut, dizlerini ayak yönünde takip ettir ve kontrollü çömel.'},
-      {name:'Deadlift', muscle:'Arka bacak · Kalça · Sırt', sets:'3 set × 5–8 tekrar', tip:'Barı vücuduna yakın tut, karnını sık ve bel pozisyonunu koru.'},
-      {name:'Lat Pulldown', muscle:'Kanat · Biceps', sets:'3 set × 8–12 tekrar', tip:'Göğsünü dik tut, barı üst göğse doğru çek; sallanmadan yap.'},
-      {name:'Shoulder Press', muscle:'Omuz · Triceps', sets:'3 set × 8–12 tekrar', tip:'Karnını sık, belini aşırı çukurlaştırma ve ağırlığı kontrollü kaldır.'},
-      {name:'Biceps Curl', muscle:'Biceps', sets:'3 set × 10–15 tekrar', tip:'Dirseklerini gövdene yakın tut, vücudunu sallamadan ağırlığı kaldır.'}
-    ].map((ex) => (
+    {exerciseLibrary.map((ex) => (
       <View key={ex.name} style={{marginTop:16, paddingTop:12, borderTopWidth:1, borderTopColor:'#30382d'}}>
         <Text style={styles.cardTitle}>{ex.name}</Text>
         <Text style={styles.muted}>{ex.muscle}</Text>
-        <Text style={styles.green}>{ex.sets}</Text>
+        <Text style={styles.green}>{ex.sets} set × {ex.reps} tekrar</Text>
         <Text style={styles.small}>{ex.tip}</Text>
       </View>
     ))}
@@ -490,6 +771,22 @@ export default function App() {
               </TouchableOpacity>
             </View>
 
+            <View style={styles.card}>
+              <Text style={styles.cardTitle}>Gelişim grafiği · Kilo</Text>
+              <Text style={styles.muted}>Son 8 ölçümünün karşılaştırmalı görünümü</Text>
+              {entries.length === 0 ? <Text style={styles.small}>Grafik için önce ölçüm kaydı ekle.</Text> : (
+                [...entries].sort((a, b) => a.date.localeCompare(b.date)).slice(-8).map((entry) => {
+                  const maxWeight = Math.max(...entries.map((item) => item.weight), 1);
+                  return (
+                    <View key={`chart-${entry.id}`} style={styles.chartRow}>
+                      <Text style={styles.small}>{entry.date.slice(5)}</Text>
+                      <View style={styles.chartTrack}><View style={[styles.chartFill, { width: `${Math.max(4, (entry.weight / maxWeight) * 100)}%` }]} /></View>
+                      <Text style={styles.small}>{entry.weight} kg</Text>
+                    </View>
+                  );
+                })
+              )}
+            </View>
             <Text style={styles.section}>ÖNCEKİ KAYITLAR</Text>
             {isLoadingEntries ? (
               <View style={styles.card}>
@@ -679,10 +976,17 @@ const styles = StyleSheet.create({
   success: { color: '#9cff35', fontSize: 12, marginTop: 12 },
   disabledButton: { opacity: 0.55 },
   entryMetrics: { flexDirection: 'row', flexWrap: 'wrap', gap: 14, marginTop: 5 },
+  chartRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 12 },
+  chartTrack: { flex: 1, height: 10, borderRadius: 8, backgroundColor: '#101510', overflow: 'hidden' },
+  chartFill: { height: 10, borderRadius: 8, backgroundColor: '#9cff35' },
+  macroBar: { height: 7, borderRadius: 6 },
   link: { color: '#9cff35', fontWeight: '800', marginTop: 14 },
   small: { color: '#8e9b8a', fontSize: 11, marginTop: 6 },
   programRow: { flexDirection: 'row', alignItems: 'center', gap: 12 },
   programIcon: { width: 38, height: 38, borderRadius: 10, backgroundColor: '#293b24', alignItems: 'center', justifyContent: 'center' },
+  exerciseList: { marginTop: 14 },
+  exerciseItem: { marginTop: 12, paddingTop: 12, borderTopWidth: 1, borderTopColor: '#30382d' },
+  exercisePicker: { gap: 8, marginTop: 2 },
   nav: { flexDirection: 'row', backgroundColor: '#171e17', borderTopWidth: 1, borderTopColor: '#293329', paddingVertical: 12, paddingHorizontal: 3 },
   navItem: { flex: 1, alignItems: 'center' },
   navText: { color: '#8e9b8a', fontSize: 9, fontWeight: '700' },
