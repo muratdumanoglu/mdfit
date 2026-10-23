@@ -398,14 +398,26 @@ export default function App() {
         ))}
 
         {tab === 'Hareketler' && (
-          <View style={styles.card}>
-            <Text style={styles.cardTitle}>Hareket kütüphanesi</Text>
-            <Text style={styles.muted}>Bench press · Squat · Deadlift · Lat pulldown · Shoulder press · Biceps curl</Text>
-            <Text style={styles.small}>Sonraki aşamada hareket açıklamaları ve doğru form yönergeleri eklenecek.</Text>
-          </View>
-        )}
-
-        {tab === 'Gelişim' && (
+  <View style={styles.card}>
+    <Text style={styles.cardTitle}>Hareket kütüphanesi</Text>
+    {[
+      {name:'Bench Press', muscle:'Göğüs · Ön omuz · Triceps', sets:'3–4 set × 6–12 tekrar', tip:'Kürek kemiklerini sabitle, ayaklarını yere bas. Barı kontrollü indir ve kaldır.'},
+      {name:'Squat', muscle:'Quadriceps · Kalça', sets:'3–4 set × 6–12 tekrar', tip:'Sırtını dengeli tut, dizlerini ayak yönünde takip ettir ve kontrollü çömel.'},
+      {name:'Deadlift', muscle:'Arka bacak · Kalça · Sırt', sets:'3 set × 5–8 tekrar', tip:'Barı vücuduna yakın tut, karnını sık ve bel pozisyonunu koru.'},
+      {name:'Lat Pulldown', muscle:'Kanat · Biceps', sets:'3 set × 8–12 tekrar', tip:'Göğsünü dik tut, barı üst göğse doğru çek; sallanmadan yap.'},
+      {name:'Shoulder Press', muscle:'Omuz · Triceps', sets:'3 set × 8–12 tekrar', tip:'Karnını sık, belini aşırı çukurlaştırma ve ağırlığı kontrollü kaldır.'},
+      {name:'Biceps Curl', muscle:'Biceps', sets:'3 set × 10–15 tekrar', tip:'Dirseklerini gövdene yakın tut, vücudunu sallamadan ağırlığı kaldır.'}
+    ].map((ex) => (
+      <View key={ex.name} style={{marginTop:16, paddingTop:12, borderTopWidth:1, borderTopColor:'#30382d'}}>
+        <Text style={styles.cardTitle}>{ex.name}</Text>
+        <Text style={styles.muted}>{ex.muscle}</Text>
+        <Text style={styles.green}>{ex.sets}</Text>
+        <Text style={styles.small}>{ex.tip}</Text>
+      </View>
+    ))}
+  </View>
+)}
+{tab === 'Gelişim' && (
           <>
             <View style={styles.card}>
               <Text style={styles.cardTitle}>Yeni ölçüm kaydı</Text>
